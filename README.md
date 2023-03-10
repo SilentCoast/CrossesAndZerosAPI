@@ -1,30 +1,46 @@
-# CrossesAndZerosAPI
+## CrossesAndZerosAPI
 
-Non-negotiable:
+Data:
 
-int MoveCode (1 - for cross, 2 - for zero)
+**int MoveCode (1 - for cross, 2 - for zero)**
 
-USAGE (on the client):
+**This API assumes that player can only send request using only their MoveCode** 
 
--Call /api/Game/GetStates/{GameID} at the start
+**e.g. Player playing for zeros *should* only send requests with MoveCode = 2**
 
-It will return string of type "xxxxxxxxx", where x - MoveCode or 0 if square weren't yet assigned
 
--To make move call /api/Game/MakeMove in Header to which send:
+### USAGE (on the client):
+
+-Call **/api/Game/GetStates/{GameID}** at the start of the game (assuming game is already created)
+
+It will return string of type "xxxxxxxxx", where x = MoveCode or 0 if square weren't yet assigned
+
+-To make a move call **/api/Game/MakeMove** in Header to which send:
 
       -Gameid
       -MoveCode
-      -Squareposition (Position on the board(check example below))
+      -SquarePosition (Position on the board(check example below))
       
- It will return updated
+ It will change the States in db and return updated string(same as **/api/Game/GetStates/{GameID}**)
 
-![Untitled](https://user-images.githubusercontent.com/94042423/224341144-1075f7be-8426-47d0-bf50-ffabd36723be.png)
+#### SquarePositions on the board:
 
-After recieving new data from /api/Game/MakeMove
+![Untitled](https://user-images.githubusercontent.com/94042423/224344885-038dcd33-4f9a-49c6-919a-5de1e92ada39.png)
 
+-After recieving new data from **/api/Game/MakeMove** call **/api/Game/AmIWon** in Header to which send:
 
-How to start:
+      -Gameid
+      -MoveCode
+
+It will return **true** if player sending the request is won and **false** if he is not
+
+### How to laucn project:
 
 -Create database using CrossesAndZerosAPIDB.sql
 
 -Change ConnectionString in appsettings.json
+
+### P.S.
+Time spent (including writing this page) = 2 h. 29 min.
+
+
